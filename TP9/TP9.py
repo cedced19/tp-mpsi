@@ -161,7 +161,6 @@ def compose(P, Q):
 	R=[0]
 	for i in range(len(P)):
 		R=poly_add(poly_scal(Qn[:], P[i]), R) 
-		print(Qn, R)
 		Qn = poly_multi(Qn, Q)
 	return R 
 
