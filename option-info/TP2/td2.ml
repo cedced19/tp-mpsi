@@ -24,3 +24,17 @@ let rec bin3_h l n = match n with
 let bin3 = bin3_h [];;
 
 (* List.iter(printf "%d ") (bin3 6);; *)
+
+let rec reverse_aux ch = match ch with
+  | "" -> ""
+  | ch -> String.concat "" [(reverse_aux (String.sub ch 1 (String.length(ch)-1))); (String.make 1 ch.[0])];;
+
+(*print_string(reverse_aux "1234");; *)
+
+let reverse n =
+  let ch = string_of_int(n) in
+  int_of_string(reverse_aux(ch));;
+
+(* print_int(reverse 1234);; *)
+
+let palindrome n = (reverse n = n);;
