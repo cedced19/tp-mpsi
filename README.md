@@ -43,3 +43,10 @@ opam install utop
 eval `opam config env`  # may not be needed
 utop
 ```
+
+## Enscript
+
+Add `.st` files to `~/.enscript/` to have Ocaml syntax:
+```
+enscript -2rG --line-numbers -w html -p output.html --highlight=ocaml --color=1 -c input.ml 
+```
