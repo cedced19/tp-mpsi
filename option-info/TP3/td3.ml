@@ -42,7 +42,7 @@ let rec addpoly p1 p2 = match (p1, p2) with
 
 let rec prodmon m1 p2 = match (m1, p1) with
   | _, [] -> []
-  | (a,b), ((e,f)::q) -> (a*.b,e*.f)::(prodmon m1 q);;
+  | (a,b), ((e,f)::q) -> (a*.e,b*.f)::(prodmon m1 q);;
 
 let rec prodpoly p1 p2 = match (p1, p2) with
   | _, [] -> []
@@ -51,7 +51,7 @@ let rec prodpoly p1 p2 = match (p1, p2) with
 
 let rec derive p= match p with
  | [] -> []
- | (d,a)::q -> (d-1,(float_of_int d) * a)::derive q;;
+ | (d,a)::q -> (d-1,(float_of_int d) *. a)::derive q;;
 
 (*Ex 10*)
 let rec takewhile p s = match p(List.hd s) with
@@ -65,3 +65,55 @@ let rec dropewhile p s = match p(List.hd s) with
 let appl p l = List.for_all p (takewhile p l);;
 
 (* s = dropewhile p s "+" takewhile p s  *)
+
+
+(*Ex 12*)
+let rec somme t i j = match i,j with
+| i, j when i=j -> t.(j)
+| i, j -> (somme t i (j-1)) + t.(j);;
+
+(* example array *)
+let randarr = Array.init (Random.int 100) (fun n -> (Random.int 100)*(int_of_float ((-1.)**(float_of_int (n * Random.int 2)))));;
+let n = Array.length randarr;;
+
+let tranche_min1 t n =
+  let m = ref t.(0) in
+  for i=0 to n-1 do 
+    for j=i to n-1 do
+      m:= min (somme t i j) !m
+    done;
+  done;
+  !m;;
+
+let rec somme_min t j n = match j with
+| j when j=n-1 -> t.(n-1)
+| j -> let s = somme_min t (j+1) n in min t.(j) (s+t.(j))
+
+let tranche_min2 t n =
+  let m = ref t.(n-1) in
+  for j=n-1 downto 0 do
+    m:= min (somme_min t j n) !m
+  done;
+  !m;;
+
+(* En variant i, il faut savoir si smin reste la somme minimale ou si s+t.(i+1) devient la nouvelle somme minimale sur 0, i+1 *)
+let tranche_min3 t n =
+  let smin = ref t.(0) and s = ref t.(0) and k = ref 0 and d = ref 0 and f = ref 0 in 
+  for i=0 to n-1 do
+    if t.(i) < !s + t.(i) then
+      begin
+        s:=t.(i);
+        k:=i;
+      end
+    else
+      s:= !s + t.(i);
+    if !s < !smin then
+      begin
+        smin:=!s;
+        d:=!k;
+        f:=i;
+      end
+  done;
+  !d, !f, !smin;;
+
+(*Ex 13*)
