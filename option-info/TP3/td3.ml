@@ -117,3 +117,21 @@ let tranche_min3 t n =
   !d, !f, !smin;;
 
 (*Ex 13*)
+let inferieur u v = u < v;;
+
+(*
+val sub : string -> int -> int -> string
+String.sub s start len returns a fresh string of length len, containing the substring of s that starts at position start and has length len.
+*)
+
+let conjugue u i =
+  let n = String.length u in
+  let v = String.sub u 0 (i-1) and w = String.sub u (i-1) (n-i+1) in w^v;;
+
+let rec lyndon_aux u n k = match k with
+  | 0 -> true
+  | k -> inferieur u (String.sub u k (n-k)) && lyndon_aux u n (k-1);;
+
+let lyndon u =
+  let n = String.length u in
+  lyndon_aux u n (n-1);;
