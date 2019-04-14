@@ -42,7 +42,7 @@ let rec addpoly p1 p2 = match (p1, p2) with
 
 let rec prodmon m1 p2 = match (m1, p1) with
   | _, [] -> []
-  | (a,b), ((e,f)::q) -> (a*.e,b*.f)::(prodmon m1 q);;
+  | (a,b), ((e,f)::q) -> (a+e,b*.f)::(prodmon m1 q);;
 
 let rec prodpoly p1 p2 = match (p1, p2) with
   | _, [] -> []
@@ -135,3 +135,68 @@ let rec lyndon_aux u n k = match k with
 let lyndon u =
   let n = String.length u in
   lyndon_aux u n (n-1);;
+
+
+let factorisation u =
+  (* Conversion en une liste de charactère*)
+  let n = String.length u in
+  let rec initialise l k = match k with
+    | k when k=0 -> l
+    | k -> initialise ((String.make 1 u.[k-1])::l) (k-1) in 
+  let ul = initialise [] n in
+  (* On raccourci la séquence *)
+  let rec compacte l = match l with
+    |[] -> []
+    |[a] -> [a]
+    |(a::b::q) when a<b -> (a^b)::(compacte q)
+    |(a::b::q) -> a::compacte (b::q) in 
+  let ll = ref ul in let lll = ref (compacte !ll) in
+    while !ll <> !lll do
+    ll := !lll ; 
+    lll := compacte !ll 
+    done;
+  !ll;;
+
+let rec insere_mot_lst u l = match l with
+  | [] -> [u]
+  | (a::q) when u < a -> u::a::q
+  | (a::q) when u = a -> a::q
+  | (a::q) -> a::(insere_mot_lst u q);;
+
+let rec insere_lst_lst l1 l2 = match l1 with
+  | [] -> l2 
+  | (a::q) -> insere_lst_lst q (insere_mot_lst a l2);;
+
+let rec fusionne_listes l1 l2 = match (l1, l2) with
+  | [], _ -> l2
+  | _, [] -> l1
+  | (a::q), (b::r) -> let la = fusionne_listes (a::q) r and lb = fusionne_listes q r in
+                      let lc = insere_lst_lst la lb in 
+                        if a<b then 
+                          insere_mot_lst (a^b) lc 
+                        else 
+                          lc;;
+
+let nmax=9;;
+let lynd = Array.make (nmax+1) [];;
+let remplir_lynd n =
+      lynd.(1) <- ["0";"1"];
+      for i=2 to n do
+        for j=1 to i do
+          lynd.(i) <- insere_lst_lst lynd.(i) (fusionne_listes lynd.(j) lynd.(i-j))
+        done
+      done;
+      for i=2 to n do
+        let rec aux l lt = match lt with
+          | [] -> l
+          | (a::q) -> if (String.length a) = i then 
+                        aux (a::l) q
+                      else 
+                        aux l q
+                      in
+          lynd.(i) <- aux [] lynd.(i)
+      done;;
+      
+
+remplir_lynd 4;;
+lynd;;
