@@ -10,15 +10,17 @@ def reduc(P):
 	return P
 
 def poly_add(P, Q):
-	n=len(P)
-	m=len(Q)
-	if m>n:
-		P=P+[0]*(m-n)
-	else:
-		Q=Q+[0]*(n-m)
-	for i in range(len(P)):
-		P[i]+=Q[i]
-	return reduc(P)
+    n=len(P)
+    m=len(Q)
+    if m>n:
+        P=P+[0]*(m-n)
+        n=m
+    else:
+        Q=Q+[0]*(n-m)
+        m=n
+    for i in range(n):
+        P[i]+=Q[i]
+    return reduc(P)
 
 
 def poly_scal(P, a):
@@ -33,18 +35,17 @@ def poly_multi(P, Q, order):
     S=[]
     if m>n:
         P=P+[0]*(m-n)
+        n=m
     else:
         Q=Q+[0]*(n-m)
-    for k in range(n+m+1):
-        if (k > order):
-            break
-        else:
-            v=0
-            for i in range(len(P)):
-                for j in range(len(Q)):
-                    if i+j==k:
-                        v+=P[i]*Q[j]
-            S.append(v)
+        m=n
+    for k in range(order+1):
+        v=0
+        for i in range(n):
+            for j in range(n):
+                if i+j==k:
+                    v+=P[i]*Q[j]
+        S.append(v)
     return reduc(S)
 
 
