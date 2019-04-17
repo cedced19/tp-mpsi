@@ -1,12 +1,51 @@
+def reduc(P):
+	c = len(P)-1
+	r = False
+	while (c >= 1 and r == False):
+		if P[c] == 0:
+			P.pop(c)
+		else:
+			r = True
+		c-=1
+	return P
 
-def binomial (k, n):
-	num = 1
-	den = 1
-	for i in range(n-k+1,n+1):
-		num*= i
-	for i in range(1,k+1):
-		den*= i
-	return num // den
+def poly_add(P, Q):
+	n=len(P)
+	m=len(Q)
+	if m>n:
+		P=P+[0]*(m-n)
+	else:
+		Q=Q+[0]*(n-m)
+	for i in range(len(P)):
+		P[i]+=Q[i]
+	return reduc(P)
+
+
+def poly_scal(P, a):
+	for i in range(len(P)):
+		P[i]*=a
+	return reduc(P)
+
+
+def poly_multi(P, Q, order):
+    n=len(P)
+    m=len(Q)
+    S=[]
+    if m>n:
+        P=P+[0]*(m-n)
+    else:
+        Q=Q+[0]*(n-m)
+    for k in range(n+m+1):
+        if (k > order):
+            break
+        else:
+            v=0
+            for i in range(len(P)):
+                for j in range(len(Q)):
+                    if i+j==k:
+                        v+=P[i]*Q[j]
+            S.append(v)
+    return reduc(S)
 
 
 def coeff (n,alpha):
@@ -19,47 +58,26 @@ def coeff (n,alpha):
             return aux(n,alpha,l,c+1,arr)
     return aux(n+1,alpha,1,1,[1])
 
+def puissance (n):
+    def aux(n,init,l,p,arr):
+        if n == p:
+            return arr
+        else:
+            l=poly_multi(init, l, n)
+            arr.append(l)
+            return aux(n,init,l,p+1,arr)
+    
+    arr=[1]*n
+    arr[0]=0
 
-#print(coeff(3,-1/2))
-
-def puissance (n,p,ordre):
-    arr = []
-
-    # puissance (x^k)^p
-    k=1
-    while k*p <= ordre and k<n+1:
-        arr.append((1,k*p))
-        k+=1
-
-    # puissance (k parmi n)*(x^a)^i*(x^b)^j
-    for i in range(1,p):
-        j=p-i
-        koef=binomial(i, p)
-        for a in range(1,n+1):
-            if a*i > ordre:
-                break
-            else:
-                for b in range(a+1,n+1):
-                    if b*j > ordre:
-                        break
-                    else:
-                        if (a*i+b*j <= ordre):
-                            arr.append((koef,a*i+b*j))
-
-    return arr
-
-#print(puissance(4,3,4))
+    return aux(n,arr,arr,1,[arr])
 
 def get_poly(n,alpha):
     k_list = coeff(n,alpha)
-    print(k_list)
-    poly=[0]*(n+1)
-    poly[0] = k_list[0]
-    for i in range(1, n+1):
-        for monome in puissance(n,i,n):
-            if(monome[1] == 8):
-                print(k_list[i], monome)
-            poly[monome[1]]=poly[monome[1]]+monome[0]*k_list[i]
-    return poly
+    poly_list = puissance(n) 
+    l = [k_list[0]]
+    for i in range(1,n+1):
+        l = poly_add(poly_scal(poly_list[i-1], k_list[i]), l)
+    return l
 
-print(get_poly(8,-1/2))
+print(get_poly(10,-1/2))
