@@ -14,7 +14,7 @@ let miroir2 l =
 
 let rec concat1 l1 list2 = match l1 with (* récurrence non termiale *)
   | []-> l1
-  | hd :: tl -> hd :: (merge tl l2);;
+  | hd :: tl -> hd :: (concat1 tl l2);;
 
 let rec concat2 l1 l2 f = match (l1, l2) with
   | [], [] -> miroir_final f
@@ -103,7 +103,12 @@ let insert n e l =
   done;
   !x;;
 
-let delete n l =
+let rec insere2 x l n = match (l,n) with
+  |l, 1 -> x::l
+  |[], n -> failwith "n est trop grand"
+  |h::q, n -> h::(insere2 x q (n-1));;
+
+let delete n l = (* Supprimer l'élement en position n (en comptant à partir de 0) *)
   (* On inverse la liste et récupère la longueur *)
    let xa = ref l and xb = ref [] and length = ref 0 in
    while !xa <> [] do
@@ -127,3 +132,13 @@ let delete n l =
      xb:=List.tl !xb
    done;
    !x;;
+
+let rec delete2 l n = match (l,n) with (* Supprimer l'élement en position n (en comptant à partir de 1) *)
+   |p::q, 1 -> q
+   |[], n -> failwith "n est trop grand"
+   |h::q, n -> h::(delete2 q (n-1));;
+
+
+let rec delete3 l x = match l with (* Supprimer les élements égaux à x *)
+ | [] -> []
+ | (h::r) -> if h <> x then h::(delete3 r x) else delete3 r x;;
