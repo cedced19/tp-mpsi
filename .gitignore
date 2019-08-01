@@ -2,5 +2,5 @@
 *.out
 *.cmi
 *.cmo
-*.png
-*.jpg
+images/*.png
+images/*.jpg
