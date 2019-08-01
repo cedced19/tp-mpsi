@@ -14,7 +14,7 @@ let miroir2 l =
 
 let rec concat1 l1 list2 = match l1 with (* récurrence non termiale *)
   | []-> l1
-  | hd :: tl -> hd :: (concat1 tl l2);;
+  | hd :: tl -> hd :: (concat1 tl l1);;
 
 let rec concat2 l1 l2 f = match (l1, l2) with
   | [], [] -> miroir_final f
