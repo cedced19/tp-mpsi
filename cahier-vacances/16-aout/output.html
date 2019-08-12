@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<HTML>
+<HEAD>
+<TITLE>16 aout</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#1F00FF" ALINK="#FF0000" VLINK="#9900DD">
+<A NAME="top">
+<A NAME="file1">
+<H1>16 aout</H1>
+
+<PRE>
+<B><FONT COLOR="#A020F0">from</FONT></B> random <B><FONT COLOR="#A020F0">import</FONT></B> randint
+
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">one_step_with_replace </FONT></B>():
+    <I><FONT COLOR="#B22222"># tirage avec remise
+</FONT></I>    X = 0
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(5): 
+        v = randint(1, 8)
+        <B><FONT COLOR="#A020F0">if</FONT></B> (v &gt; 8): <I><FONT COLOR="#B22222"># au dessus de 8 on obtient une boule blanche 
+</FONT></I>            X+=1   <I><FONT COLOR="#B22222"># on compte le nombre de boule blanche
+</FONT></I>    Y=X*2+(5-X)*(-3)
+    <B><FONT COLOR="#A020F0">return</FONT></B> (X, Y)
+
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">one_step_without_replace </FONT></B>():
+    <I><FONT COLOR="#B22222"># tirage sans remise
+</FONT></I>    X = 0
+    initial=1
+    final=10
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(5): 
+        v = randint(initial, final) <I><FONT COLOR="#B22222"># au dessus de 8 on obtient une boule blanche 
+</FONT></I>        <B><FONT COLOR="#A020F0">if</FONT></B> (v &gt; 8): 
+            X+=1
+            final=final-1 <I><FONT COLOR="#B22222"># on enlève la possiblité d'obtenir une boule blanche
+</FONT></I>        <B><FONT COLOR="#A020F0">else</FONT></B>:
+            initial=initial+1 <I><FONT COLOR="#B22222"># on enlève la possiblité d'obtenir une boule noire
+</FONT></I>    Y=X*2+(5-X)*(-3)
+    <B><FONT COLOR="#A020F0">return</FONT></B> (X, Y)
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">esperance </FONT></B>(func, n):
+    arrX = [0]*6
+    arrY = {}
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(n+1):
+        (X, Y) = func()
+        arrX[X]+=1
+        arrY[Y]=1+arrY.get(Y, 0)
+    esperanceX = 0
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(6):
+        esperanceX+= arrX[i]*i*(1/n)
+    esperanceY = 0
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> arrY.keys():
+        esperanceY+= arrY[i]*i*(1/n)
+    <B><FONT COLOR="#A020F0">return</FONT></B> (esperanceX, esperanceY)
+    
+
+<B><FONT COLOR="#A020F0">print</FONT></B>(esperance(one_step_with_replace, 1000000))
+<B><FONT COLOR="#A020F0">print</FONT></B>(esperance(one_step_without_replace, 1000000))</PRE>
+</BODY>
+</HTML>

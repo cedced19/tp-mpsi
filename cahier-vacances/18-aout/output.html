@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<HTML>
+<HEAD>
+<TITLE>Enscript Output</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#1F00FF" ALINK="#FF0000" VLINK="#9900DD">
+<A NAME="top">
+<A NAME="file1">
+<H1>18 aout</H1>
+
+<PRE>
+<B><FONT COLOR="#A020F0">import</FONT></B> numpy as np 
+<B><FONT COLOR="#A020F0">import</FONT></B> matplotlib.pyplot as plt
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">mandelbrot </FONT></B>(c):
+    p = 0
+    z = 0
+    <B><FONT COLOR="#A020F0">while</FONT></B> (p &lt; 50 <B><FONT COLOR="#A020F0">and</FONT></B> abs(z) &lt;= 2):
+        z = z**2 + c
+        p+=1
+    <B><FONT COLOR="#A020F0">if</FONT></B> (p&lt;50):
+        <B><FONT COLOR="#A020F0">return</FONT></B> p
+    <B><FONT COLOR="#A020F0">else</FONT></B>:
+        <B><FONT COLOR="#A020F0">return</FONT></B> -1
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">show_mandelbrot </FONT></B>(lng):
+    x = np.linspace(-2,2,lng)
+    y = np.linspace(-2,2,lng)
+    iteration = np.zeros((lng, lng))
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(len(x)):
+        <B><FONT COLOR="#A020F0">for</FONT></B> j <B><FONT COLOR="#A020F0">in</FONT></B> range(len(y)):
+            iteration[i,j]=mandelbrot(complex(x[i],y[j]))
+    plt.imshow(iteration)
+    plt.show()
+
+<I><FONT COLOR="#B22222">#show_mandelbrot(1000)
+</FONT></I>
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">julia </FONT></B>(c, z):
+    p = 0
+    <B><FONT COLOR="#A020F0">while</FONT></B> (p &lt; 50 <B><FONT COLOR="#A020F0">and</FONT></B> abs(z) &lt;= 2):
+        z = z**2 + c
+        p+=1
+    <B><FONT COLOR="#A020F0">if</FONT></B> (p&lt;50):
+        <B><FONT COLOR="#A020F0">return</FONT></B> p
+    <B><FONT COLOR="#A020F0">else</FONT></B>:
+        <B><FONT COLOR="#A020F0">return</FONT></B> -1
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">show_julia </FONT></B>(c, lng):
+    x = np.linspace(-2,2,lng)
+    y = np.linspace(-2,2,lng)
+    iteration = np.zeros((lng, lng))
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(len(x)):
+        <B><FONT COLOR="#A020F0">for</FONT></B> j <B><FONT COLOR="#A020F0">in</FONT></B> range(len(y)):
+            iteration[i,j]=julia(c, complex(x[i],y[j]))
+    plt.imshow(iteration)
+    plt.show()
+
+show_julia(complex(0.28,0.53),15000)
+show_julia(complex(0.28,0.53),1000)
+show_julia(complex(-0.63,0.67),1000)
+show_julia(complex(-0.85,0.2),1000)</PRE>
+</BODY>
+</HTML>
