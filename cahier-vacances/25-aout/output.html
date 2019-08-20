@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<HTML>
+<HEAD>
+<TITLE>Enscript Output</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#1F00FF" ALINK="#FF0000" VLINK="#9900DD">
+<A NAME="top">
+<A NAME="file1">
+<H1>25 aout</H1>
+
+<PRE>
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">chiffre </FONT></B>(c): 
+    n = str(c)
+    arr = []
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(0,len(n)):
+        arr.append(int(n[i]))
+    <B><FONT COLOR="#A020F0">return</FONT></B> arr
+
+<B><FONT COLOR="#A020F0">print</FONT></B>(chiffre(1234))
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">liste </FONT></B>(arr):
+    c=0
+    n=len(arr)
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(n):
+        c += arr[i]*10**(n-1-i)
+    <B><FONT COLOR="#A020F0">return</FONT></B> c
+
+<B><FONT COLOR="#A020F0">print</FONT></B>(liste([1, 2, 3, 4]))
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">decroissant </FONT></B>(c):
+    arr = chiffre(c)
+    <B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">echange </FONT></B>(i,j):
+        u = arr[i]
+        arr[i]=arr[j]
+        arr[j]=u
+    <I><FONT COLOR="#B22222"># tri selection
+</FONT></I>    n = len(arr)
+    ind_max = 0
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(n):
+        ind_max = i
+        <B><FONT COLOR="#A020F0">for</FONT></B> j <B><FONT COLOR="#A020F0">in</FONT></B> range(i+1,n):
+            <B><FONT COLOR="#A020F0">if</FONT></B> (arr[j] &gt; arr[ind_max]):
+                ind_max = j
+        echange(i, ind_max)
+    <B><FONT COLOR="#A020F0">return</FONT></B> liste(arr)
+                
+<B><FONT COLOR="#A020F0">print</FONT></B>(decroissant(8459))
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">croissant </FONT></B>(c):
+    arr = chiffre(c)
+    <B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">echange </FONT></B>(i,j):
+        u = arr[i]
+        arr[i]=arr[j]
+        arr[j]=u
+    <I><FONT COLOR="#B22222"># tri selection
+</FONT></I>    n = len(arr)
+    ind_min = 0
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(n):
+        ind_min = i
+        <B><FONT COLOR="#A020F0">for</FONT></B> j <B><FONT COLOR="#A020F0">in</FONT></B> range(i+1,n):
+            <B><FONT COLOR="#A020F0">if</FONT></B> (arr[j] &lt; arr[ind_min]):
+                ind_min = j
+        echange(i, ind_min)
+    <B><FONT COLOR="#A020F0">return</FONT></B> liste(arr)
+
+<B><FONT COLOR="#A020F0">print</FONT></B>(croissant(8459))
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">Kaprekar </FONT></B>(n):
+    <B><FONT COLOR="#A020F0">return</FONT></B> decroissant(n)-croissant(n)
+
+<B><FONT COLOR="#A020F0">print</FONT></B>(Kaprekar(1826))
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">test_val_kaprekar </FONT></B>(init, final, val):
+    arr = []
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(init,final+1):
+        <B><FONT COLOR="#A020F0">if</FONT></B> (Kaprekar(i) == val):
+            arr.append(i)
+    <B><FONT COLOR="#A020F0">return</FONT></B> arr
+
+<B><FONT COLOR="#A020F0">print</FONT></B>(test_val_kaprekar(1000,9999, 0))
+<B><FONT COLOR="#A020F0">print</FONT></B>(test_val_kaprekar(1000,9999, 999))
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">test_id_kaprekar </FONT></B>(init, final):
+    arr = []
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(init,final+1):
+        <B><FONT COLOR="#A020F0">if</FONT></B> (Kaprekar(i) == i):
+            arr.append(i)
+    <B><FONT COLOR="#A020F0">return</FONT></B> arr
+
+<B><FONT COLOR="#A020F0">print</FONT></B>(test_id_kaprekar(1000,9999)) <I><FONT COLOR="#B22222"># Seul 6174 convient
+</FONT></I>
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">Kaprekar_it </FONT></B>(n,i):
+    c=n
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(i):
+        c=Kaprekar(c)
+    <B><FONT COLOR="#A020F0">return</FONT></B> c
+
+<B><FONT COLOR="#A020F0">print</FONT></B>(Kaprekar_it(1826,2))
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">chaine </FONT></B>(n):
+    c=n
+    arr=[n]
+    <B><FONT COLOR="#A020F0">while</FONT></B> (c != 6174 <B><FONT COLOR="#A020F0">and</FONT></B> c != 0): 
+        c=Kaprekar(c)
+        arr.append(c)
+    <B><FONT COLOR="#A020F0">return</FONT></B> arr
+
+<B><FONT COLOR="#A020F0">print</FONT></B>(chaine(1826))
+
+<B><FONT COLOR="#A020F0">def</FONT></B> <B><FONT COLOR="#0000FF">min_it </FONT></B>(init, final, j):
+    arr = []
+    <B><FONT COLOR="#A020F0">for</FONT></B> i <B><FONT COLOR="#A020F0">in</FONT></B> range(init,final+1):
+        <B><FONT COLOR="#A020F0">if</FONT></B> (len(chaine(i)) == j):
+            arr.append(i)
+    <B><FONT COLOR="#A020F0">return</FONT></B> arr
+
+<B><FONT COLOR="#A020F0">print</FONT></B>(min_it(1000,9999, 8))
+<B><FONT COLOR="#A020F0">print</FONT></B>(chaine(9006))</PRE>
+</BODY>
+</HTML>
